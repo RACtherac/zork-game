@@ -1,0 +1,221 @@
+using System;
+
+class Program
+{
+    static void Main()
+    {
+        // 0 = Well
+        // 1 = Cave
+        // 2 = Treasure Room
+        bool isPlaying = true;
+
+        int playerPosition = 0;
+
+        bool hasKey = false;
+        bool monsterAlive = true;
+        bool inMenu = true;
+        bool returnToMenu = false;
+
+        while (inMenu)
+        {
+            Console.WriteLine("You have awoken in a damp shallow well above you is a figure looking down at you and then leaves.");
+            Console.WriteLine("Will you surive or will you perish here?");
+            Console.WriteLine();
+            Console.WriteLine("Welcome to the game!");
+            Console.WriteLine("1. Start Game");
+            Console.WriteLine("2. Quit");
+            Console.Write("> ");
+            string menuChoice = Console.ReadLine();
+            if (menuChoice == "1")
+            {
+                inMenu = false;
+            }
+            else if (menuChoice == "2")
+            {
+                Console.WriteLine("You quit the game.");
+                return;
+            }
+            else
+            {
+                Console.WriteLine("Invalid choice. Please select 1 or 2.");
+            }
+        }
+
+        Console.WriteLine("You see a door to the east, and a path leading west.");
+        Console.WriteLine("Type 'help' to see the commands.");
+
+        while (isPlaying)
+        {
+            Console.WriteLine();
+            Console.Write("> ");
+
+            string command = Console.ReadLine().ToLower();
+
+            if (command == "help")
+            {
+                Console.WriteLine();
+                Console.WriteLine("Commands:");
+                Console.WriteLine("look      - Look around the room");
+                Console.WriteLine("north     - Move north");
+                Console.WriteLine("south     - Move south");
+                Console.WriteLine("east      - Move east");
+                Console.WriteLine("west      - Move west");
+                Console.WriteLine("interact  - Interact with something in the room");
+                Console.WriteLine("help      - Show the commands");
+                Console.WriteLine("quit      - Return to the main menu");
+            }
+
+            
+            else if (command == "look")
+            {
+                if (playerPosition == 0) 
+                {
+                    Console.WriteLine("You are in a well.");
+                    Console.WriteLine("You see a path leading east.");
+                    Console.WriteLine("Around you are bones scated floating in the water could this be the peoppe before you that were throwned in here to. There is something shiny in the water.");
+                }
+                else if (playerPosition == 1)
+                {
+                    Console.WriteLine("You are inside a dark cave.");
+                    Console.WriteLine("There is a locked door to the east.");
+                    Console.WriteLine("You hear something moving in the darkness.");
+                }
+                else if (playerPosition == 2)
+                {
+                    Console.WriteLine("You are in a large treasure room.");
+                    Console.WriteLine("There is gold and treasure everywhere!");
+                }
+            }
+
+           
+            else if (command == "east")
+            {
+                if (playerPosition == 0)
+                {
+                    playerPosition = 1;
+                    Console.WriteLine("You walk east into the cave.");
+                }
+                else if (playerPosition == 1)
+                {
+                    if (hasKey)
+                    {
+                        playerPosition = 2;
+                        Console.WriteLine("You unlock the door and enter the treasure room!");
+                    }
+                    else
+                    {
+                        Console.WriteLine("The door is locked.");
+                        Console.WriteLine("You need a key.");
+                    }
+                }
+                else
+                {
+                    Console.WriteLine("You cannot go east.");
+                }
+            }
+
+     
+            else if (command == "west")
+            {
+                if (playerPosition == 1)
+                {
+                    playerPosition = 0;
+                    Console.WriteLine("You walk west back into the forest.");
+                }
+                else if (playerPosition == 2)
+                {
+                    playerPosition = 1;
+                    Console.WriteLine("You walk west back into the cave.");
+                }
+                else
+                {
+                    Console.WriteLine("You cannot go west.");
+                }
+            }
+
+        
+            else if (command == "north")
+            {
+                Console.WriteLine("There is no path north.");
+            }
+
+       
+            else if (command == "south")
+            {
+                Console.WriteLine("There is no path south.");
+            }
+
+      
+            else if (command == "interact")
+            {
+           
+                if (playerPosition == 0)
+                {
+                    if (!hasKey)
+                    {
+                        Console.WriteLine("You search the water.");
+                        Console.WriteLine("You find a small golden key!");
+                        hasKey = true;
+                    }
+                    else
+                    {
+                        Console.WriteLine("There is nothing else interesting here.");
+                    }
+                }
+
+                else if (playerPosition == 1)
+                {
+                    if (monsterAlive)
+                    {
+                        Console.WriteLine("A monster jumps out of the darkness!");
+                        Console.WriteLine("You try to fight it...");
+                        Console.WriteLine("The monster defeats you.");
+                        Console.WriteLine();
+                        Console.WriteLine("YOU LOSE!");
+
+                        isPlaying = false;
+                    }
+                    else
+                    {
+                        Console.WriteLine("The cave is quiet.");
+                        Console.WriteLine("The door to the east is unlocked.");
+                    }
+                }
+
+              
+                else if (playerPosition == 2)
+                {
+                    Console.WriteLine("You approach the treasure.");
+                    Console.WriteLine("You pick up the golden treasure!");
+                    Console.WriteLine();
+                    Console.WriteLine("YOU WON!");
+                    Console.WriteLine();
+                    Console.WriteLine("returning to the main menu...");
+
+                    isPlaying = false;
+                }
+            }
+
+     
+            else if (command == "quit")
+            {
+                Console.WriteLine("You quit the game.");
+                Console.WriteLine("Returning to the main menu...");
+
+                returnToMenu = true;
+                //isPlaying = false;
+            }
+
+         
+            else
+            {
+                Console.WriteLine("I don't understand that command.");
+                Console.WriteLine("Type 'help' to see the available commands.");
+            }
+        }
+
+        Console.WriteLine();
+        Console.WriteLine("Game over.");
+    }
+}
+
