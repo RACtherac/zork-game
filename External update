@@ -41,7 +41,7 @@ class Program
             bool hascrops = false;
             bool monsterAlive = true;
             bool riddlesSolved = false;
-            bool hastools = true;
+            bool hastools = false;
 
 
 
@@ -91,6 +91,7 @@ class Program
 
             Console.WriteLine("You see a door to the east, and a path leading west.");
             Console.WriteLine("Type 'help' to see the commands.");
+            Console.WriteLine("YOu are rignt now in the well [0]");
 
             log.Add("You have awoken.");
 
@@ -116,6 +117,8 @@ class Program
                     Console.WriteLine("south     - Move south");
                     Console.WriteLine("east      - Move east");
                     Console.WriteLine("west      - Move west");
+                    Console.WriteLine("up        - Move up");
+                    Console.WriteLine("down      - Move down");
                     Console.WriteLine("interact  - Interact with something in the room");
                     Console.WriteLine("speak     - Talk into the void");
                     Console.WriteLine("map       - Show the map");
@@ -174,18 +177,18 @@ class Program
                     Console.WriteLine();
                     Console.WriteLine("Map:");
                     Console.WriteLine();
-                    Console.WriteLine("    [Hut]  - [Store]");
-                    Console.WriteLine("                |");
-                    Console.WriteLine("[warehouse] - [Fields] - [Barn]");
-                    Console.WriteLine("                |");
-                    Console.WriteLine("   [Well]  -  [Cave]  - [Treasure Room]");
+                    Console.WriteLine("      [Hut 5 ]  - [Store 4 ]");
+                    Console.WriteLine("                     |");
+                    Console.WriteLine("[warehouse 10 ] - [Fields 3 ] - [Barn 8 ]");
+                    Console.WriteLine("                     |");
+                    Console.WriteLine("    [Well 0 ]  -  [Cave 1]  - [Treasure Room 2 ]");
                     Console.WriteLine();
                     Console.WriteLine();
                     Console.WriteLine("Map on floor down");
                     Console.WriteLine();
                     Console.WriteLine(" [Hut]  - [Store]");
                     Console.WriteLine("             |");
-                    Console.WriteLine("          [tunnel] - [Barn basement]");
+                    Console.WriteLine("          [tunnel 11 ] - [Barn basement 9 ]");
                     Console.WriteLine("             |");
                     Console.WriteLine("[Well]  -  [Cave]  - [Treasure Room]");
                 }
@@ -336,6 +339,7 @@ class Program
                         playerPosition = 1;
 
                         Console.WriteLine("You walk east into the cave.");
+                        Console.WriteLine("You are in a cave [1]");
                     }
 
                     else if (playerPosition == 1)
@@ -396,6 +400,12 @@ class Program
 
                         Console.WriteLine("You walk through the field and find a barn.");
                     }
+                    else if (playerPosition == 10)
+                    {
+                        playerPosition = 3;
+
+                        Console.WriteLine("you walk back to the feild.");
+                    }
 
                     else
                     {
@@ -413,6 +423,7 @@ class Program
                         playerPosition = 0;
 
                         Console.WriteLine("You walk west back to the well.");
+                        Console.WriteLine("You are in the well [0]");
                     }
 
                     else if (playerPosition == 2)
@@ -420,6 +431,9 @@ class Program
                         playerPosition = 1;
 
                         Console.WriteLine("You walk west back into the cave.");
+                        Console.WriteLine("You are in the cave [1]");
+
+
                     }
 
                     else if (playerPosition == 4)
@@ -427,6 +441,7 @@ class Program
                         playerPosition = 5;
 
                         Console.WriteLine("You walk west to the hut.");
+                        Console.WriteLine("You stand outside the hut [5]");
                     }
 
                     else if (playerPosition == 5)
@@ -442,7 +457,12 @@ class Program
                         playerPosition = 10;
 
                         Console.WriteLine("a warehouse creeeps abouw the feild.");
+                    }
+                    else if (playerPosition == 8)
+                    {
+                        playerPosition = 3;
 
+                        Console.WriteLine("Back to the feilds.");
                     }
 
                     else
@@ -461,6 +481,7 @@ class Program
                         playerPosition = 3;
 
                         Console.WriteLine("You walk north into the fields.");
+
                     }
 
                     else if (playerPosition == 3)
@@ -521,6 +542,15 @@ class Program
                         playerPosition = 9;
 
                         Console.WriteLine("You climb down the ladder.");
+                    }
+                }
+
+                else if (command == "up")
+                {
+                    if (playerPosition == 9)
+                    {
+                        playerPosition = 8;
+                        Console.WriteLine("You climb up the ladder.");
                     }
                 }
 
@@ -642,7 +672,7 @@ class Program
                     }
                     else if (playerPosition == 8)
                     {
-                        if (!hastools)
+                        if (hastools)
                         {
                             Console.WriteLine("you attempt to open the barn doors.");
                             Console.WriteLine();
