@@ -42,6 +42,7 @@ class Program
             bool monsterAlive = true;
             bool riddlesSolved = false;
             bool hastools = false;
+            bool hasgun = false;
 
 
 
