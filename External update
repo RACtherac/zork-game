@@ -7,7 +7,7 @@ class Program
     {
         bool returnToMenu = true;
 
-    while (returnToMenu)
+        while (returnToMenu)
         {
             returnToMenu = false;
 
@@ -57,7 +57,7 @@ class Program
 
                 string menuChoice = Console.ReadLine() ?? "";
 
-                
+
                 inputLog.Add("Menu: " + menuChoice);
 
                 if (menuChoice == "1")
@@ -234,6 +234,14 @@ class Program
 
                         isPlaying = false;
                     }
+                    else if (playerPosition == 7)
+                    {
+                        Console.WriteLine("Gold, jewalery, riches everywhere.");
+                        Console.WriteLine("A ladder leans on the wall and a large hole in the roof.");
+
+
+                        log.Add("Freedom at last ?");
+                    }
                 }
 
 
@@ -283,6 +291,11 @@ class Program
                     {
                         Console.WriteLine("You call out to the creature.");
                         Console.WriteLine("It does not respond.");
+                    }
+                    else if (playerPosition == 7)
+                    {
+                        Console.WriteLine("You call out the the sky.");
+                        Console.WriteLine("the sound of nature respond.");
                     }
                 }
 
@@ -447,6 +460,12 @@ class Program
                         playerPosition = 1;
 
                         Console.WriteLine("You walk south back into the cave.");
+                    }
+                    else if (playerPosition == 7)
+                    {
+                        playerPosition = 2;
+
+                        Console.WriteLine("You leave the room to your freadom.");
                     }
 
                     else
@@ -633,13 +652,13 @@ class Program
 
         inputLog.Add("Riddle 1 answer: " + answer1);
 
-        if (answer1 == "Arthur " ||
-            answer1 == "Arthur king of the britan" ||
-            answer1 == "Lancelot" ||
-            answer1 == "Lancelot of camelot" ||
-            answer1 == "Robin" ||
-            answer1 == "Galahad " ||
-            answer1 == "Galahad of camelot"
+        if (answer1 == "arthur" ||
+            answer1 == "arthur king of the britan" ||
+            answer1 == "lancelot" ||
+            answer1 == "lancelot of camelot" ||
+            answer1 == "robin" ||
+            answer1 == "galahad" ||
+            answer1 == "galahad of camelot"
                 )
         {
             Console.WriteLine("Correct!");
@@ -694,7 +713,7 @@ class Program
 
         inputLog.Add("Riddle 3 answer: " + answer3);
 
-        if (answer3 == "african or european swallow"||
+        if (answer3 == "african or european swallow" ||
             answer3 == "african or european")
         {
             Console.WriteLine("I dont know!");
@@ -708,6 +727,8 @@ class Program
             Console.WriteLine("The door slams shut.");
 
             log.Add("Failed riddle 3.");
+            Console.WriteLine("you get throwned and snap ypur neck.");
+            
 
             return false;
         }
