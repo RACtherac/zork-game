@@ -1,0 +1,1604 @@
+using System;
+using System.Collections.Generic;
+
+class Program
+{
+    private static bool monsterAlive;
+
+    static void Main()
+    {
+        bool returnToMenu = true;
+
+        while (returnToMenu)
+        {
+            returnToMenu = false;
+
+            List<string> log = new List<string>();
+            List<string> inputLog = new List<string>();
+
+            // =========================
+            // LOCATIONS
+            // =========================
+            //
+            // 0  = Well
+            // 1  = Cave
+            // 2  = Treasure Room
+            // 3  = Fields
+            // 4  = Town
+            // 5  = Hut outside
+            // 6  = Inside hut
+            // 7  = True treasure room
+            // 8  = Barn
+            // 9  = Barn basement
+            // 10 = Warehouse
+            // 11 = Tunnel
+
+
+            // =========================
+            // GAME VARIABLES
+            // =========================
+
+            bool isPlaying = true;
+            bool inMenu = true;
+
+            int playerPosition = 0;
+
+            bool hasKey = false;
+            bool hascrops = false;
+            bool monsterAlive = true;
+            bool riddlesSolved = false;
+
+            bool hastools = false;
+            bool hasgun = false;
+            bool barnOpened = false;
+
+            bool paintingDiscovered = false;
+            int paintingHintStage = 0;
+
+
+            // =========================
+            // DISCOVERED LOCATIONS
+            // =========================
+
+            bool[] discoveredLocations = new bool[12];
+
+            // Player starts knowing only the well.
+            discoveredLocations[0] = true;
+
+
+            // =========================
+            // MAIN MENU
+            // =========================
+
+            while (inMenu)
+            {
+                Console.Clear();
+
+                Console.WriteLine("You have awoken in a damp shallow well.");
+                Console.WriteLine("Above you is a figure looking down at you and then leaves.");
+                Console.WriteLine("Will you survive or will you perish here?");
+                Console.WriteLine();
+
+                Console.WriteLine("Welcome to the game!");
+                Console.WriteLine("1. Start Game");
+                Console.WriteLine("2. Quit");
+                Console.Write("> ");
+
+                string menuChoice = Console.ReadLine() ?? "";
+
+                inputLog.Add("Menu: " + menuChoice);
+
+                if (menuChoice == "1")
+                {
+                    inMenu = false;
+                }
+                else if (menuChoice == "2")
+                {
+                    Console.WriteLine();
+                    Console.WriteLine("You quit the game.");
+                    return;
+                }
+                else
+                {
+                    Console.WriteLine("Invalid choice. Please select 1 or 2.");
+                    Console.WriteLine("Press any key to try again.");
+                    Console.ReadKey();
+                }
+            }
+
+
+            // =========================
+            // START GAME
+            // =========================
+
+            Console.Clear();
+
+            Console.WriteLine("You see a door to the east, and a path leading west.");
+            Console.WriteLine("Type 'help' to see the commands.");
+            Console.WriteLine("You are right now in the well [0]");
+
+            log.Add("You have awoken.");
+
+
+            // =========================
+            // MAIN GAME LOOP
+            // =========================
+
+            while (isPlaying)
+            {
+                Console.WriteLine();
+                Console.Write("> ");
+
+                string command = Console.ReadLine()?.ToLower().Trim() ?? "";
+
+                inputLog.Add(command);
+
+
+                // =========================
+                // HELP
+                // =========================
+
+                if (command == "help")
+                {
+                    Console.WriteLine();
+                    Console.WriteLine("Commands:");
+                    Console.WriteLine("look      - Look around the room");
+                    Console.WriteLine("north     - Move north");
+                    Console.WriteLine("south     - Move south");
+                    Console.WriteLine("east      - Move east");
+                    Console.WriteLine("west      - Move west");
+                    Console.WriteLine("up        - Move up");
+                    Console.WriteLine("down      - Move down");
+                    Console.WriteLine("interact  - Interact with something in the room");
+                    Console.WriteLine("speak     - Talk into the void");
+                    Console.WriteLine("map       - Show the discovered map");
+                    Console.WriteLine("journal   - Show special game events");
+                    Console.WriteLine("inputlog  - Show all player inputs");
+                    Console.WriteLine("quit      - Return to the main menu");
+                }
+
+
+                // =========================
+                // JOURNAL
+                // =========================
+
+                else if (command == "journal")
+                {
+                    Console.WriteLine();
+
+                    if (log.Count == 0)
+                    {
+                        Console.WriteLine("The journal is empty.");
+                    }
+                    else
+                    {
+                        Console.WriteLine("Journal:");
+
+                        foreach (string entry in log)
+                        {
+                            Console.WriteLine("- " + entry);
+                        }
+                    }
+                }
+
+
+                // =========================
+                // INPUT LOG
+                // =========================
+
+                else if (command == "inputlog")
+                {
+                    Console.WriteLine();
+
+                    if (inputLog.Count == 0)
+                    {
+                        Console.WriteLine("No inputs have been recorded.");
+                    }
+                    else
+                    {
+                        Console.WriteLine("Player Input Log:");
+
+                        foreach (string input in inputLog)
+                        {
+                            Console.WriteLine("- " + input);
+                        }
+                    }
+                }
+
+
+                // =========================
+                // MAP
+                // =========================
+
+                else if (command == "map")
+                {
+                    ShowMap(discoveredLocations, playerPosition);
+                }
+
+
+                // =========================
+                // LOOK
+                // =========================
+
+                else if (command == "look")
+                {
+                    if (playerPosition == 0)
+                    {
+                        Console.WriteLine("You are in a well.");
+                        Console.WriteLine("You see a path leading east.");
+                        Console.WriteLine("Around you are bones scattered in the water.");
+                        Console.WriteLine("Could these be the people before you that were thrown in here too?");
+                        Console.WriteLine("There is something shiny in the water.");
+                    }
+
+                    else if (playerPosition == 1)
+                    {
+                        Console.WriteLine("You are inside a dark cave.");
+                        Console.WriteLine("There is a locked door to the east.");
+                        Console.WriteLine("You hear something moving in the darkness.");
+                    }
+
+                    else if (playerPosition == 2)
+                    {
+                        Console.WriteLine("You are in a large treasure room.");
+                        Console.WriteLine("There is gold and treasure everywhere!");
+                    }
+
+                    else if (playerPosition == 3)
+                    {
+                        Console.WriteLine("A long stretch of wheat and crops.");
+                        Console.WriteLine("In the distance you see lights.");
+                        Console.WriteLine("There is a warehouse to the west.");
+                        Console.WriteLine("There is a barn to the east.");
+                    }
+
+                    else if (playerPosition == 4)
+                    {
+                        Console.WriteLine("A small town.");
+                        Console.WriteLine("Lights are on in the streets and windows, but no one is around.");
+                    }
+
+                    else if (playerPosition == 5)
+                    {
+                        Console.WriteLine("A small hut with a slit in the door.");
+                        Console.WriteLine("It looks like you can put something there.");
+                    }
+
+                    else if (playerPosition == 6)
+                    {
+                        if (monsterAlive)
+                        {
+                            Console.WriteLine("You look up and see a large creature with a toothy smile.");
+                            Console.WriteLine("It looks like it is about to eat you.");
+                            Console.WriteLine("You have nowhere to run.");
+
+                            if (hasgun)
+                            {
+                                Console.WriteLine("You feel the gun in your possession.");
+                            }
+                        }
+                        else
+                        {
+                            Console.WriteLine("The creature lies dead on the floor.");
+                            Console.WriteLine("The room is strangely quiet.");
+
+                            if (paintingDiscovered)
+                            {
+                                Console.WriteLine();
+                                Console.WriteLine("A large painting hangs on the wall.");
+                                Console.WriteLine("It depicts the Knights of the Round Table.");
+
+                                if (paintingHintStage == 0)
+                                {
+                                    Console.WriteLine("The names are difficult to make out.");
+                                    Console.WriteLine("Perhaps you should interact with the painting.");
+                                }
+                                else if (paintingHintStage == 1)
+                                {
+                                    Console.WriteLine();
+                                    Console.WriteLine("You can make out several names:");
+                                    Console.WriteLine("Arthur");
+                                    Console.WriteLine("Lancelot");
+                                    Console.WriteLine("Galahad");
+                                    Console.WriteLine("Gawain");
+
+                                    Console.WriteLine();
+                                    Console.WriteLine("There are more names, but they are still difficult to see.");
+                                }
+                                else if (paintingHintStage == 2)
+                                {
+                                    Console.WriteLine();
+                                    Console.WriteLine("More of the names become visible:");
+                                    Console.WriteLine("Percival");
+                                    Console.WriteLine("Tristan");
+                                    Console.WriteLine("Bors");
+                                    Console.WriteLine("Kay");
+
+                                    Console.WriteLine();
+                                    Console.WriteLine("The painting seems to be pointing you toward the names of the knights.");
+                                }
+                                else
+                                {
+                                    Console.WriteLine();
+                                    Console.WriteLine("The entire painting is now visible.");
+                                    Console.WriteLine("The Knights of the Round Table are:");
+                                    Console.WriteLine();
+                                    Console.WriteLine("Arthur");
+                                    Console.WriteLine("Lancelot");
+                                    Console.WriteLine("Galahad");
+                                    Console.WriteLine("Gawain");
+                                    Console.WriteLine("Percival");
+                                    Console.WriteLine("Tristan");
+                                    Console.WriteLine("Bors");
+                                    Console.WriteLine("Kay");
+                                    Console.WriteLine("Bedivere");
+                                    Console.WriteLine("Gareth");
+                                    Console.WriteLine("Geraint");
+                                    Console.WriteLine("Agravain");
+                                    Console.WriteLine("Mordred");
+
+                                    Console.WriteLine();
+                                    Console.WriteLine("Perhaps one of these names is the answer to something...");
+                                }
+                            }
+                        }
+                    }
+
+                    else if (playerPosition == 7)
+                    {
+                        Console.WriteLine("Gold, jewelry, riches everywhere.");
+                        Console.WriteLine("A ladder leans on the wall and a large hole in the roof.");
+                    }
+
+                    else if (playerPosition == 8)
+                    {
+                        Console.WriteLine("You approach the barn.");
+
+                        if (!barnOpened)
+                        {
+                            Console.WriteLine("The doors are barricaded from the outside.");
+                            Console.WriteLine("They look like they were trying to keep something in.");
+                            Console.WriteLine("You may need some tools to open them.");
+                        }
+                        else
+                        {
+                            Console.WriteLine("The barn doors are open.");
+                            Console.WriteLine("The barn is empty.");
+                            Console.WriteLine("There is a hatch in the floor.");
+                        }
+                    }
+
+                    else if (playerPosition == 9)
+                    {
+                        Console.WriteLine("You are in the dark basement of the barn.");
+                        Console.WriteLine("There is a tunnel leading west.");
+                        Console.WriteLine("A ladder leads back up to the barn.");
+                    }
+
+                    else if (playerPosition == 10)
+                    {
+                        Console.WriteLine("You are inside an old warehouse.");
+                        Console.WriteLine("Broken boxes and old equipment cover the floor.");
+
+                        if (!hastools)
+                        {
+                            Console.WriteLine("Something useful may be hidden here.");
+                        }
+                        else
+                        {
+                            Console.WriteLine("There is nothing else useful here.");
+                        }
+                    }
+
+                    else if (playerPosition == 11)
+                    {
+                        Console.WriteLine("You are in a dark underground tunnel.");
+                        Console.WriteLine("The tunnel is cold and damp.");
+
+                        if (!hasgun)
+                        {
+                            Console.WriteLine("Something catches your eye in the darkness.");
+                        }
+                        else
+                        {
+                            Console.WriteLine("The tunnel is empty.");
+                        }
+                    }
+
+                    // Show ASCII picture
+                    ShowLocationPicture(playerPosition);
+                }
+
+
+                // =========================
+                // SPEAK
+                // =========================
+
+                else if (command == "speak")
+                {
+                    if (playerPosition == 0)
+                    {
+                        Console.WriteLine("You call out to the individual above.");
+                        Console.WriteLine("They do not respond.");
+                    }
+
+                    else if (playerPosition == 1)
+                    {
+                        Console.WriteLine("You call out.");
+                        Console.WriteLine("Your voice echoes through the cave.");
+                    }
+
+                    else if (playerPosition == 2)
+                    {
+                        Console.WriteLine("Whispers surround you.");
+                        Console.WriteLine("There is gold and treasure everywhere!");
+                    }
+
+                    else if (playerPosition == 3)
+                    {
+                        Console.WriteLine("You whistle a tune for yourself.");
+                    }
+
+                    else if (playerPosition == 4)
+                    {
+                        Console.WriteLine("You call out to the town.");
+                        Console.WriteLine("A knocking can be heard as a response from the west.");
+
+                        log.Add("Heard a knocking from the west.");
+                    }
+
+                    else if (playerPosition == 5)
+                    {
+                        Console.WriteLine("You knock on the door.");
+                        Console.WriteLine("A raspy voice says:");
+                        Console.WriteLine("'Hunger, consume, sand, meat, hunger.'");
+                    }
+
+                    else if (playerPosition == 6)
+                    {
+                        Console.WriteLine("You call out to the creature.");
+
+                        if (monsterAlive)
+                        {
+                            Console.WriteLine("It does not respond.");
+                        }
+                        else
+                        {
+                            Console.WriteLine("The creature is dead.");
+                        }
+                    }
+
+                    else if (playerPosition == 7)
+                    {
+                        Console.WriteLine("You call out to the sky.");
+                        Console.WriteLine("The sound of nature responds.");
+                    }
+
+                    else if (playerPosition == 9)
+                    {
+                        Console.WriteLine("You call out in the darkness.");
+                        Console.WriteLine("Nothing answers.");
+                    }
+
+                    else if (playerPosition == 10)
+                    {
+                        Console.WriteLine("You call out into the warehouse.");
+                        Console.WriteLine("Your voice echoes between the empty walls.");
+                    }
+
+                    else if (playerPosition == 11)
+                    {
+                        Console.WriteLine("You call out into the tunnel.");
+                        Console.WriteLine("Your voice disappears into the darkness.");
+                    }
+                }
+
+
+                // =========================
+                // EAST
+                // =========================
+
+                else if (command == "east")
+                {
+                    if (playerPosition == 0)
+                    {
+                        playerPosition = 1;
+                        discoveredLocations[1] = true;
+
+                        Console.WriteLine("You walk east into the cave.");
+                        Console.WriteLine("You are in a cave [1].");
+                    }
+
+                    else if (playerPosition == 1)
+                    {
+                        if (hasKey)
+                        {
+                            if (!riddlesSolved)
+                            {
+                                Console.WriteLine("You use the golden key on the locked door.");
+
+                                log.Add("Used the golden key on the locked door.");
+
+                                riddlesSolved = AskRiddles(log, inputLog);
+
+                                if (riddlesSolved)
+                                {
+                                    playerPosition = 2;
+                                    discoveredLocations[2] = true;
+
+                                    Console.WriteLine("You enter the treasure room.");
+
+                                    log.Add("Entered the treasure room.");
+                                }
+                                else
+                                {
+                                    Console.WriteLine("You remain inside the cave.");
+                                }
+                            }
+                            else
+                            {
+                                playerPosition = 2;
+                                discoveredLocations[2] = true;
+
+                                Console.WriteLine("You walk through the open door into the treasure room.");
+                            }
+                        }
+                        else
+                        {
+                            Console.WriteLine("The door is locked.");
+                            Console.WriteLine("You need a key.");
+                        }
+                    }
+
+                    else if (playerPosition == 6)
+                    {
+                        playerPosition = 5;
+
+                        Console.WriteLine("You slowly back out of the hut.");
+                    }
+
+                    else if (playerPosition == 5)
+                    {
+                        playerPosition = 4;
+                        discoveredLocations[4] = true;
+
+                        Console.WriteLine("You walk back east into the town.");
+                    }
+
+                    else if (playerPosition == 3)
+                    {
+                        playerPosition = 8;
+                        discoveredLocations[8] = true;
+
+                        Console.WriteLine("You walk through the field and find a barn.");
+                        Console.WriteLine("You are at the barn [8].");
+                    }
+
+                    else if (playerPosition == 11)
+                    {
+                        playerPosition = 9;
+                        discoveredLocations[9] = true;
+
+                        Console.WriteLine("You walk back into the barn basement.");
+                        Console.WriteLine("You are in the basement [9].");
+                    }
+
+                    else if (playerPosition == 10)
+                    {
+                        playerPosition = 3;
+                        discoveredLocations[3] = true;
+
+                        Console.WriteLine("You walk back to the fields.");
+                    }
+
+                    else
+                    {
+                        Console.WriteLine("You cannot go east.");
+                    }
+                }
+
+
+                // =========================
+                // WEST
+                // =========================
+
+                else if (command == "west")
+                {
+                    if (playerPosition == 1)
+                    {
+                        playerPosition = 0;
+                        discoveredLocations[0] = true;
+
+                        Console.WriteLine("You walk west back to the well.");
+                        Console.WriteLine("You are in the well [0].");
+                    }
+
+                    else if (playerPosition == 2)
+                    {
+                        playerPosition = 1;
+                        discoveredLocations[1] = true;
+
+                        Console.WriteLine("You walk west back into the cave.");
+                        Console.WriteLine("You are in the cave [1].");
+                    }
+
+                    else if (playerPosition == 4)
+                    {
+                        playerPosition = 5;
+                        discoveredLocations[5] = true;
+
+                        Console.WriteLine("You walk west to the hut.");
+                        Console.WriteLine("You stand outside the hut [5].");
+                    }
+
+                    else if (playerPosition == 5)
+                    {
+                        playerPosition = 6;
+
+                        Console.WriteLine("You walk inside and feel a liquid drop on your shoulder.");
+
+                        log.Add("Entered the hut. Something does not feel right.");
+                    }
+
+                    else if (playerPosition == 3)
+                    {
+                        playerPosition = 10;
+                        discoveredLocations[10] = true;
+
+                        Console.WriteLine("A warehouse creeps above the field.");
+                        Console.WriteLine("You enter the warehouse [10].");
+                    }
+
+                    else if (playerPosition == 8)
+                    {
+                        playerPosition = 3;
+                        discoveredLocations[3] = true;
+
+                        Console.WriteLine("Back to the fields.");
+                    }
+
+                    else if (playerPosition == 9)
+                    {
+                        playerPosition = 11;
+                        discoveredLocations[11] = true;
+
+                        Console.WriteLine("You enter the dark tunnel.");
+                        Console.WriteLine("You are in the tunnel [11].");
+                    }
+
+                    else
+                    {
+                        Console.WriteLine("You cannot go west.");
+                    }
+                }
+
+
+                // =========================
+                // NORTH
+                // =========================
+
+                else if (command == "north")
+                {
+                    if (playerPosition == 1)
+                    {
+                        playerPosition = 3;
+                        discoveredLocations[3] = true;
+
+                        Console.WriteLine("You walk north into the fields.");
+                    }
+
+                    else if (playerPosition == 3)
+                    {
+                        playerPosition = 4;
+                        discoveredLocations[4] = true;
+
+                        Console.WriteLine("You walk north into the town.");
+                    }
+
+                    else if (playerPosition == 2)
+                    {
+                        playerPosition = 7;
+                        discoveredLocations[7] = true;
+
+                        Console.WriteLine("You walk into a room covered in gold and relics.");
+                        Console.WriteLine("There is a ladder on the wall.");
+                    }
+
+                    else
+                    {
+                        Console.WriteLine("There is no path north.");
+                    }
+                }
+
+
+                // =========================
+                // SOUTH
+                // =========================
+
+                else if (command == "south")
+                {
+                    if (playerPosition == 4)
+                    {
+                        playerPosition = 3;
+                        discoveredLocations[3] = true;
+
+                        Console.WriteLine("You walk south back into the fields.");
+                    }
+
+                    else if (playerPosition == 3)
+                    {
+                        playerPosition = 1;
+                        discoveredLocations[1] = true;
+
+                        Console.WriteLine("You walk south back into the cave.");
+                    }
+
+                    else if (playerPosition == 7)
+                    {
+                        playerPosition = 2;
+                        discoveredLocations[2] = true;
+
+                        Console.WriteLine("You leave the room to your freedom.");
+                    }
+
+                    else
+                    {
+                        Console.WriteLine("There is no path south.");
+                    }
+                }
+
+
+                // =========================
+                // DOWN
+                // =========================
+
+                else if (command == "down")
+                {
+                    if (playerPosition == 8)
+                    {
+                        if (barnOpened)
+                        {
+                            playerPosition = 9;
+                            discoveredLocations[9] = true;
+
+                            Console.WriteLine("You climb down the ladder.");
+                            Console.WriteLine("You are in the barn basement [9].");
+                        }
+                        else
+                        {
+                            Console.WriteLine("The barn is still closed.");
+                            Console.WriteLine("You need to open the barn first.");
+                        }
+                    }
+                    else
+                    {
+                        Console.WriteLine("There is nowhere to go down here.");
+                    }
+                }
+
+
+                // =========================
+                // UP
+                // =========================
+
+                else if (command == "up")
+                {
+                    if (playerPosition == 9)
+                    {
+                        playerPosition = 8;
+                        discoveredLocations[8] = true;
+
+                        Console.WriteLine("You climb up the ladder.");
+                        Console.WriteLine("You are back in the barn [8].");
+                    }
+                    else
+                    {
+                        Console.WriteLine("There is nowhere to go up.");
+                    }
+                }
+
+
+                // =========================
+                // INTERACT
+                // =========================
+
+                else if (command == "interact")
+                {
+                    // =========================
+                    // WELL
+                    // =========================
+
+                    if (playerPosition == 0)
+                    {
+                        if (!hasKey)
+                        {
+                            Console.WriteLine("You search the water.");
+                            Console.WriteLine("You find a small golden key!");
+
+                            hasKey = true;
+
+                            log.Add("Found a key in the water.");
+                        }
+                        else
+                        {
+                            Console.WriteLine("There is nothing else interesting here.");
+                        }
+                    }
+
+
+                    // =========================
+                    // CAVE
+                    // =========================
+
+                    else if (playerPosition == 1)
+                    {
+                        if (monsterAlive)
+                        {
+                            Console.WriteLine("A monster jumps out of the darkness!");
+                            Console.WriteLine("You try to fight it...");
+                            Console.WriteLine("The monster defeats you.");
+                            Console.WriteLine();
+                            Console.WriteLine("YOU LOSE!");
+
+                            log.Add("The monster defeated you.");
+
+                            isPlaying = false;
+                        }
+                        else
+                        {
+                            Console.WriteLine("The cave is quiet.");
+                        }
+                    }
+
+
+                    // =========================
+                    // FIELDS
+                    // =========================
+
+                    else if (playerPosition == 3)
+                    {
+                        if (!hascrops)
+                        {
+                            Console.WriteLine("You take some crops.");
+
+                            hascrops = true;
+
+                            log.Add("Took some crops.");
+                        }
+                        else
+                        {
+                            Console.WriteLine("There is nothing else interesting here.");
+                        }
+                    }
+
+
+                    // =========================
+                    // HUT OUTSIDE
+                    // =========================
+
+                    else if (playerPosition == 5)
+                    {
+                        if (hascrops)
+                        {
+                            Console.WriteLine("You put the crops into the slit.");
+                            Console.WriteLine("The door opens and you see a small room with a bed and a chest.");
+
+                            log.Add("Opened the hut door using crops.");
+                        }
+                        else
+                        {
+                            Console.WriteLine("You need something to put into the slit.");
+                        }
+                    }
+
+
+                    // =========================
+                    // INSIDE HUT
+                    // =========================
+
+                    else if (playerPosition == 6)
+                    {
+                        if (monsterAlive)
+                        {
+                            if (hasgun)
+                            {
+                                Console.WriteLine("You open the chest.");
+                                Console.WriteLine("There is a mirror in the roof of the chest.");
+                                Console.WriteLine("You look up and see a large creature with a toothy smile.");
+                                Console.WriteLine();
+                                Console.WriteLine("The creature lunges at you!");
+                                Console.WriteLine();
+                                Console.WriteLine("You quickly pull out the gun.");
+                                Console.WriteLine("BANG!");
+                                Console.WriteLine();
+
+                                Console.WriteLine("The creature falls to the ground.");
+                                Console.WriteLine("You have killed the creature.");
+
+                                monsterAlive = false;
+
+                                log.Add("Killed the creature in the hut.");
+
+                                Console.WriteLine();
+                                Console.WriteLine("Behind the creature you notice a large painting.");
+                                Console.WriteLine("It depicts the Knights of the Round Table.");
+                                Console.WriteLine();
+                                Console.WriteLine("The names on the painting are difficult to read.");
+                                Console.WriteLine("Maybe you should inspect the painting.");
+
+                                paintingDiscovered = true;
+                                paintingHintStage = 0;
+
+                                log.Add("Discovered a painting of the Knights of the Round Table.");
+                            }
+                            else
+                            {
+                                Console.WriteLine("You open the chest.");
+                                Console.WriteLine("There is a mirror in the roof of the chest pointing up.");
+                                Console.WriteLine("You look up and see a large creature with a toothy smile.");
+                                Console.WriteLine();
+                                Console.WriteLine("It looks like it is about to eat you.");
+                                Console.WriteLine();
+                                Console.WriteLine("You have nowhere to run and it is too late to fight back.");
+                                Console.WriteLine();
+                                Console.WriteLine("The creature lunges at you.");
+                                Console.WriteLine("GAME OVER!");
+
+                                log.Add("The creature attacked you.");
+
+                                isPlaying = false;
+                            }
+                        }
+                        else
+                        {
+                            Console.WriteLine("The creature lies dead on the floor.");
+
+                            if (paintingDiscovered)
+                            {
+                                Console.WriteLine("The painting hangs on the wall.");
+                                Console.WriteLine("You should inspect it more closely.");
+                            }
+                        }
+                    }
+
+
+                    // =========================
+                    // TRUE TREASURE ROOM
+                    // =========================
+
+                    else if (playerPosition == 7)
+                    {
+                        Console.WriteLine("You approach the treasure.");
+                        Console.WriteLine("You pick up the golden treasure!");
+                        Console.WriteLine();
+                        Console.WriteLine("YOU WON!");
+
+                        log.Add("The player found the treasure and won.");
+
+                        isPlaying = false;
+                    }
+
+
+                    // =========================
+                    // BARN
+                    // =========================
+
+                    else if (playerPosition == 8)
+                    {
+                        if (hastools)
+                        {
+                            if (!barnOpened)
+                            {
+                                Console.WriteLine("You use the tools to remove the barricade.");
+                                Console.WriteLine();
+                                Console.WriteLine("The barn doors open.");
+                                Console.WriteLine("The barn is empty.");
+                                Console.WriteLine("You notice a hatch on the floor.");
+
+                                barnOpened = true;
+
+                                log.Add("Opened the barn using the tools.");
+                            }
+                            else
+                            {
+                                Console.WriteLine("The barn is already open.");
+                                Console.WriteLine("There is a hatch leading down.");
+                            }
+                        }
+                        else
+                        {
+                            Console.WriteLine("You try to open the barn doors.");
+                            Console.WriteLine("They are too heavily barricaded.");
+                            Console.WriteLine("You need some tools.");
+
+                            log.Add("Needed tools to open the barn.");
+                        }
+                    }
+
+
+                    // =========================
+                    // WAREHOUSE
+                    // =========================
+
+                    else if (playerPosition == 10)
+                    {
+                        if (!hastools)
+                        {
+                            Console.WriteLine("You look around.");
+                            Console.WriteLine("You find a small set of tools hidden underneath some old cloth.");
+                            Console.WriteLine("You pick them up.");
+
+                            hastools = true;
+
+                            log.Add("Found tools in the warehouse.");
+                        }
+                        else
+                        {
+                            Console.WriteLine("There is nothing else useful here.");
+                        }
+                    }
+
+
+                    // =========================
+                    // TUNNEL
+                    // =========================
+
+                    else if (playerPosition == 11)
+                    {
+                        if (!hasgun)
+                        {
+                            Console.WriteLine("You search the tunnel.");
+                            Console.WriteLine("You find an old gun hidden underneath some cloth.");
+                            Console.WriteLine("You pick it up.");
+
+                            hasgun = true;
+
+                            log.Add("Found a gun in the tunnel.");
+                        }
+                        else
+                        {
+                            Console.WriteLine("There is nothing else useful here.");
+                        }
+                    }
+
+
+                    // =========================
+                    // PAINTING
+                    // =========================
+
+                    if (playerPosition == 6 &&
+                        paintingDiscovered &&
+                        !monsterAlive)
+                    {
+                        Console.WriteLine();
+                        Console.WriteLine("You study the painting more carefully.");
+
+                        if (paintingHintStage == 0)
+                        {
+                            Console.WriteLine();
+                            Console.WriteLine("You wipe away some of the dust.");
+
+                            Console.WriteLine();
+                            Console.WriteLine("Arthur");
+                            Console.WriteLine("Lancelot");
+                            Console.WriteLine("Galahad");
+                            Console.WriteLine("Gawain");
+
+                            Console.WriteLine();
+                            Console.WriteLine("Four names are visible.");
+                            Console.WriteLine("The rest are still covered in dust.");
+
+                            paintingHintStage = 1;
+                        }
+
+                        else if (paintingHintStage == 1)
+                        {
+                            Console.WriteLine();
+                            Console.WriteLine("You wipe away more dust.");
+
+                            Console.WriteLine();
+                            Console.WriteLine("Percival");
+                            Console.WriteLine("Tristan");
+                            Console.WriteLine("Bors");
+                            Console.WriteLine("Kay");
+
+                            Console.WriteLine();
+                            Console.WriteLine("More names are visible.");
+                            Console.WriteLine("There are still names hidden beneath the dust.");
+
+                            paintingHintStage = 2;
+                        }
+
+                        else if (paintingHintStage == 2)
+                        {
+                            Console.WriteLine();
+                            Console.WriteLine("You wipe away even more dust.");
+
+                            Console.WriteLine();
+                            Console.WriteLine("Bedivere");
+                            Console.WriteLine("Gareth");
+                            Console.WriteLine("Geraint");
+                            Console.WriteLine("Agravain");
+                            Console.WriteLine("Mordred");
+
+                            Console.WriteLine();
+                            Console.WriteLine("The entire painting is now visible.");
+                            Console.WriteLine("The names of the knights may hold the answer to the riddle.");
+
+                            paintingHintStage = 3;
+                        }
+
+                        else
+                        {
+                            Console.WriteLine();
+                            Console.WriteLine("You have already studied the entire painting.");
+
+                            Console.WriteLine();
+                            Console.WriteLine("The Knights of the Round Table:");
+
+                            Console.WriteLine("Arthur");
+                            Console.WriteLine("Lancelot");
+                            Console.WriteLine("Galahad");
+                            Console.WriteLine("Gawain");
+                            Console.WriteLine("Percival");
+                            Console.WriteLine("Tristan");
+                            Console.WriteLine("Bors");
+                            Console.WriteLine("Kay");
+                            Console.WriteLine("Bedivere");
+                            Console.WriteLine("Gareth");
+                            Console.WriteLine("Geraint");
+                            Console.WriteLine("Agravain");
+                            Console.WriteLine("Mordred");
+
+                            Console.WriteLine();
+                            Console.WriteLine("Perhaps one of these names is the answer...");
+                        }
+                    }
+                }
+
+
+                // =========================
+                // QUIT
+                // =========================
+
+                else if (command == "quit")
+                {
+                    Console.WriteLine("Returning to the main menu...");
+
+                    log.Add("The player returned to the main menu.");
+
+                    isPlaying = false;
+                    returnToMenu = true;
+                }
+
+
+                // =========================
+                // UNKNOWN COMMAND
+                // =========================
+
+                else
+                {
+                    Console.WriteLine("I don't understand that command.");
+                    Console.WriteLine("Type 'help' to see the available commands.");
+                }
+            }
+
+
+            // =========================
+            // GAME END
+            // =========================
+
+            Console.WriteLine();
+
+            if (returnToMenu)
+            {
+                Console.WriteLine("Press any key to return to the main menu.");
+                Console.ReadKey();
+            }
+            else
+            {
+                Console.WriteLine("The game has ended.");
+                Console.WriteLine("Press any key to return to the main menu.");
+
+                Console.ReadKey();
+
+                returnToMenu = true;
+            }
+        }
+    }
+
+
+    // =========================================================
+    // SHOW MAP
+    // =========================================================
+
+    static void ShowMap(bool[] discoveredLocations, int playerPosition)
+    {
+        Console.WriteLine();
+        Console.WriteLine("MAP");
+        Console.WriteLine();
+
+        string well = discoveredLocations[0] ? "[Well]" : "[???]";
+        string cave = discoveredLocations[1] ? "[Cave]" : "[???]";
+        string treasure = discoveredLocations[2] ? "[Treasure]" : "[???]";
+        string fields = discoveredLocations[3] ? "[Fields]" : "[???]";
+        string town = discoveredLocations[4] ? "[Town]" : "[???]";
+        string hut = discoveredLocations[5] ? "[Hut]" : "[???]";
+        string treasure2 = discoveredLocations[7] ? "[Treasure 2]" : "[???]";
+        string barn = discoveredLocations[8] ? "[Barn]" : "[???]";
+        string basement = discoveredLocations[9] ? "[Basement]" : "[???]";
+        string warehouse = discoveredLocations[10] ? "[Warehouse]" : "[???]";
+        string tunnel = discoveredLocations[11] ? "[Tunnel]" : "[???]";
+
+
+        Console.WriteLine("                    " + hut);
+        Console.WriteLine("                       |");
+        Console.WriteLine("                    " + town);
+        Console.WriteLine("                       |");
+        Console.WriteLine(warehouse + " --- " + fields + " --- " + barn);
+        Console.WriteLine("                       |");
+        Console.WriteLine("                    " + cave + " --- " + treasure);
+        Console.WriteLine("                       |");
+        Console.WriteLine("                    " + well);
+
+        Console.WriteLine();
+        Console.WriteLine("Underground:");
+        Console.WriteLine();
+
+        Console.WriteLine("                    " + barn);
+        Console.WriteLine("                       |");
+        Console.WriteLine("                  " + basement + " --- " + tunnel);
+
+        Console.WriteLine();
+        Console.WriteLine("Treasure:");
+        Console.WriteLine();
+
+        Console.WriteLine("                    " + treasure);
+        Console.WriteLine("                       |");
+        Console.WriteLine("                  " + treasure2);
+
+        Console.WriteLine();
+
+        Console.WriteLine("You are here: " + GetLocationName(playerPosition));
+        Console.WriteLine();
+        Console.WriteLine("Legend:");
+        Console.WriteLine("[???] = Undiscovered");
+        Console.WriteLine();
+    }
+
+
+    // =========================================================
+    // GET LOCATION NAME
+    // =========================================================
+
+    static string GetLocationName(int position)
+    {
+        switch (position)
+        {
+            case 0:
+                return "Well";
+
+            case 1:
+                return "Cave";
+
+            case 2:
+                return "Treasure Room";
+
+            case 3:
+                return "Fields";
+
+            case 4:
+                return "Town";
+
+            case 5:
+                return "Hut";
+
+            case 6:
+                return "Inside the Hut";
+
+            case 7:
+                return "True Treasure Room";
+
+            case 8:
+                return "Barn";
+
+            case 9:
+                return "Barn Basement";
+
+            case 10:
+                return "Warehouse";
+
+            case 11:
+                return "Tunnel";
+
+            default:
+                return "Unknown";
+        }
+    }
+
+
+    // =========================================================
+    // LOCATION PICTURES
+    // =========================================================
+
+    static void ShowLocationPicture(int playerPosition)
+    {
+        Console.WriteLine();
+
+        if (playerPosition == 0)
+        {
+            Console.WriteLine("       _________");
+            Console.WriteLine("      /         \\");
+            Console.WriteLine("     /           \\");
+            Console.WriteLine("    |    WATER    |");
+            Console.WriteLine("    |   ~~~~~~~~  |");
+            Console.WriteLine("    |   ~~~~~~~~  |");
+            Console.WriteLine("     \\           /");
+            Console.WriteLine("      \\_________/");
+        }
+
+        else if (playerPosition == 1)
+        {
+            Console.WriteLine("        ___________");
+            Console.WriteLine("      /             \\");
+            Console.WriteLine("     /               \\");
+            Console.WriteLine("    |       /\\        |");
+            Console.WriteLine("    |      /  \\       |");
+            Console.WriteLine("    |     /    \\      |");
+            Console.WriteLine("    |____/      \\_____|");
+        }
+
+        else if (playerPosition == 2)
+        {
+            Console.WriteLine("       __________________");
+            Console.WriteLine("      |                  |");
+            Console.WriteLine("      |     TREASURE     |");
+            Console.WriteLine("      |   $  $  $  $     |");
+            Console.WriteLine("      |  $  $  $  $  $   |");
+            Console.WriteLine("      |__________________|");
+        }
+
+        else if (playerPosition == 3)
+        {
+            Console.WriteLine("   | |   | |   | |   | |");
+            Console.WriteLine("   | |   | |   | |   | |");
+            Console.WriteLine("   / \\   / \\   / \\   / \\");
+            Console.WriteLine("  /   \\ /   \\ /   \\ /   \\");
+            Console.WriteLine();
+            Console.WriteLine("          FIELD OF CROPS");
+        }
+
+        else if (playerPosition == 4)
+        {
+            Console.WriteLine("             /\\");
+            Console.WriteLine("            /  \\");
+            Console.WriteLine("           /____\\");
+            Console.WriteLine("          |      |");
+            Console.WriteLine("          | TOWN |");
+            Console.WriteLine("          |______|");
+            Console.WriteLine("       _ _ _|  |_ _ _");
+        }
+
+        else if (playerPosition == 5)
+        {
+            Console.WriteLine("             /\\");
+            Console.WriteLine("            /  \\");
+            Console.WriteLine("           /____\\");
+            Console.WriteLine("          |      |");
+            Console.WriteLine("          | HUT  |");
+            Console.WriteLine("          |  []  |");
+            Console.WriteLine("          |______|");
+        }
+
+        else if (playerPosition == 6)
+        {
+            Console.WriteLine("        __________________");
+            Console.WriteLine("       |                  |");
+            Console.WriteLine("       |       CHEST      |");
+            Console.WriteLine("       |       ____       |");
+            Console.WriteLine("       |      |____|      |");
+            Console.WriteLine("       |                  |");
+            Console.WriteLine("       |__________________|");
+
+            if (!monsterAlive)
+            {
+                Console.WriteLine();
+                Console.WriteLine("        ____________________");
+                Console.WriteLine("       |  KNIGHTS PAINTING  |");
+                Console.WriteLine("       |                    |");
+                Console.WriteLine("       |  Arthur  Lancelot  |");
+                Console.WriteLine("       |____________________|");
+            }
+        }
+
+        else if (playerPosition == 7)
+        {
+            Console.WriteLine("       __________________");
+            Console.WriteLine("      |                  |");
+            Console.WriteLine("      |    GOLD GOLD     |");
+            Console.WriteLine("      |  $  $  $  $  $   |");
+            Console.WriteLine("      |__________________|");
+            Console.WriteLine();
+            Console.WriteLine("             /\\");
+            Console.WriteLine("            /  \\");
+            Console.WriteLine("           /    \\");
+            Console.WriteLine("          FREEDOM");
+        }
+
+        else if (playerPosition == 8)
+        {
+            Console.WriteLine("             /\\");
+            Console.WriteLine("            /  \\");
+            Console.WriteLine("           /____\\");
+            Console.WriteLine("          |      |");
+            Console.WriteLine("          | BARN |");
+            Console.WriteLine("          |  ||  |");
+            Console.WriteLine("          |__||__|");
+        }
+
+        else if (playerPosition == 9)
+        {
+            Console.WriteLine("        __________________");
+            Console.WriteLine("       |                  |");
+            Console.WriteLine("       |   BARN BASEMENT  |");
+            Console.WriteLine("       |                  |");
+            Console.WriteLine("       |       ||         |");
+            Console.WriteLine("       |_______||_________|");
+        }
+
+        else if (playerPosition == 10)
+        {
+            Console.WriteLine("     _____________________");
+            Console.WriteLine("    |                     |");
+            Console.WriteLine("    |     WAREHOUSE       |");
+            Console.WriteLine("    |    _________        |");
+            Console.WriteLine("    |   |  BOXES  |       |");
+            Console.WriteLine("    |   |_________|       |");
+            Console.WriteLine("    |_____________________|");
+        }
+
+        else if (playerPosition == 11)
+        {
+            Console.WriteLine("       ___________________");
+            Console.WriteLine("     /                     \\");
+            Console.WriteLine("    /                       \\");
+            Console.WriteLine("   |          TUNNEL        |");
+            Console.WriteLine("   |       __________       |");
+            Console.WriteLine("   |      |    GUN   |      |");
+            Console.WriteLine("   |______|__________|______|");
+        }
+
+        Console.WriteLine();
+    }
+
+
+    // =========================================================
+    // RIDDLES
+    // =========================================================
+
+    static bool AskRiddles(List<string> log, List<string> inputLog)
+    {
+        Console.WriteLine();
+        Console.WriteLine("The golden key turns in the lock...");
+        Console.WriteLine("The door slowly opens.");
+        Console.WriteLine();
+
+        Console.WriteLine("A voice speaks from the darkness:");
+        Console.WriteLine("\"Answer my three riddles, and you may enter.\"");
+
+
+        // =========================
+        // RIDDLE 1
+        // =========================
+
+        Console.WriteLine();
+        Console.WriteLine("Riddle 1:");
+        Console.WriteLine("What is your name?");
+        Console.Write("> ");
+
+        string answer1 = Console.ReadLine()?.ToLower().Trim() ?? "";
+
+        inputLog.Add("Riddle 1 answer: " + answer1);
+
+        if (answer1 == "arthur" ||
+            answer1 == "arthur king of the britan" ||
+            answer1 == "lancelot" ||
+            answer1 == "lancelot of camelot" ||
+            answer1 == "robin" ||
+            answer1 == "galahad" ||
+            answer1 == "galahad of camelot")
+        {
+            Console.WriteLine("Correct!");
+
+            log.Add("Solved riddle 1.");
+        }
+        else
+        {
+            Console.WriteLine("Wrong answer.");
+            Console.WriteLine("The door slams shut.");
+
+            log.Add("Failed riddle 1.");
+
+            return false;
+        }
+
+
+        // =========================
+        // RIDDLE 2
+        // =========================
+
+        Console.WriteLine();
+        Console.WriteLine("Riddle 2:");
+        Console.WriteLine("What is your favorite colour?");
+        Console.Write("> ");
+
+        string answer2 = Console.ReadLine()?.ToLower().Trim() ?? "";
+
+        inputLog.Add("Riddle 2 answer: " + answer2);
+
+        if (answer2 == "red" ||
+            answer2 == "blue" ||
+            answer2 == "green")
+        {
+            Console.WriteLine("Correct!");
+
+            log.Add("Solved riddle 2.");
+        }
+        else
+        {
+            Console.WriteLine("Wrong answer.");
+            Console.WriteLine("The door slams shut.");
+
+            log.Add("Failed riddle 2.");
+
+            return false;
+        }
+
+
+        // =========================
+        // RIDDLE 3
+        // =========================
+
+        Console.WriteLine();
+        Console.WriteLine("Riddle 3:");
+        Console.WriteLine("What is the air-speed velocity of an unladen swallow?");
+        Console.Write("> ");
+
+        string answer3 = Console.ReadLine()?.ToLower().Trim() ?? "";
+
+        inputLog.Add("Riddle 3 answer: " + answer3);
+
+        if (answer3 == "african or european swallow" ||
+            answer3 == "african or european")
+        {
+            Console.WriteLine("I don't know!");
+            Console.WriteLine("A loud bang is heard and the door opens.");
+
+            log.Add("Solved riddle 3.");
+        }
+        else
+        {
+            Console.WriteLine("Wrong answer.");
+            Console.WriteLine("The door slams shut.");
+
+            log.Add("Failed riddle 3.");
+
+            Console.WriteLine("You get thrown and snap your neck.");
+
+            return false;
+        }
+
+
+        // =========================
+        // ALL RIDDLES SOLVED
+        // =========================
+
+        Console.WriteLine();
+        Console.WriteLine("The voice falls silent.");
+        Console.WriteLine("The path to the north into a new treasure room is now open.");
+
+        log.Add("Solved all three riddles.");
+
+        return true;
+    }
+}
