@@ -25,6 +25,10 @@ class Program
             // 5 = store 
             // inside hut = 6
             // 7 = trye treasure room
+            // 8 = barn
+            // 9 = barn basement
+            // 10 = warehouse
+
 
 
 
@@ -37,6 +41,7 @@ class Program
             bool hascrops = false;
             bool monsterAlive = true;
             bool riddlesSolved = false;
+            bool hastools = true;
 
 
 
@@ -169,11 +174,20 @@ class Program
                     Console.WriteLine();
                     Console.WriteLine("Map:");
                     Console.WriteLine();
-                    Console.WriteLine(" [Hut] - [Store]");
-                    Console.WriteLine("            |");
-                    Console.WriteLine("         [Fields]");
-                    Console.WriteLine("            |");
-                    Console.WriteLine("[Well] - [Cave] - [Treasure Room]");
+                    Console.WriteLine("    [Hut]  - [Store]");
+                    Console.WriteLine("                |");
+                    Console.WriteLine("[warehouse] - [Fields] - [Barn]");
+                    Console.WriteLine("                |");
+                    Console.WriteLine("   [Well]  -  [Cave]  - [Treasure Room]");
+                    Console.WriteLine();
+                    Console.WriteLine();
+                    Console.WriteLine("Map on floor down");
+                    Console.WriteLine();
+                    Console.WriteLine(" [Hut]  - [Store]");
+                    Console.WriteLine("             |");
+                    Console.WriteLine("          [tunnel] - [Barn basement]");
+                    Console.WriteLine("             |");
+                    Console.WriteLine("[Well]  -  [Cave]  - [Treasure Room]");
                 }
 
 
@@ -242,6 +256,14 @@ class Program
 
                         log.Add("Freedom at last ?");
                     }
+                    else if (playerPosition == 8)
+                    {
+                        Console.WriteLine("You approach the barn.");
+                        Console.WriteLine("The doors are baricaded from the outside like they were trying to keep something in.");
+
+                        log.Add("Something is inside the barn.");
+
+                    }
                 }
 
 
@@ -296,6 +318,11 @@ class Program
                     {
                         Console.WriteLine("You call out the the sky.");
                         Console.WriteLine("the sound of nature respond.");
+                    }
+                    else if (playerPosition == 9)
+                    {
+                        Console.WriteLine("You call out in the darkness.");
+                        Console.WriteLine("nothing answers.");
                     }
                 }
 
@@ -363,6 +390,12 @@ class Program
 
                         Console.WriteLine("You walk back east into the town.");
                     }
+                    else if (playerPosition == 3)
+                    {
+                        playerPosition = 8;
+
+                        Console.WriteLine("You walk through the field and find a barn.");
+                    }
 
                     else
                     {
@@ -403,6 +436,13 @@ class Program
                         Console.WriteLine("You walk inside and feel a liquid drop on your shoulder.");
 
                         log.Add("Entered the hut. Something does not feel right.");
+                    }
+                    else if (playerPosition == 3)
+                    {
+                        playerPosition = 10;
+
+                        Console.WriteLine("a warehouse creeeps abouw the feild.");
+
                     }
 
                     else
@@ -473,6 +513,17 @@ class Program
                         Console.WriteLine("There is no path south.");
                     }
                 }
+
+                else if (command == "down")
+                {
+                    if (playerPosition == 8)
+                    {
+                        playerPosition = 9;
+
+                        Console.WriteLine("You climb down the ladder.");
+                    }
+                }
+
 
 
 
@@ -570,6 +621,7 @@ class Program
 
                             isPlaying = false;
                         }
+                       
                         else
                         {
                             Console.WriteLine("There is nothing else interesting here.");
@@ -588,6 +640,39 @@ class Program
 
                         isPlaying = false;
                     }
+                    else if (playerPosition == 8)
+                    {
+                        if (!hastools)
+                        {
+                            Console.WriteLine("you attempt to open the barn doors.");
+                            Console.WriteLine();
+                            Console.WriteLine("Its empty only a hatch on the floor.");
+                            
+                        }
+                        else
+                        {
+                            Console.WriteLine("you cant open weak man");
+                            log.Add("some tools?");
+                        }
+
+                    }
+                    if (playerPosition == 10)
+                    {
+                        if (!hastools)
+                        {
+                            Console.WriteLine("you look around.");
+                            Console.WriteLine("found a small tool!");
+
+                            hastools = true;
+
+                            log.Add("Found a tool in the water.");
+                        }
+                        else
+                        {
+                            Console.WriteLine("There is nothing else interesting here.");
+                        }
+                    }
+
                 }
 
 
