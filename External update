@@ -17,6 +17,14 @@ class Program
 
             List<string> inputLog = new List<string>();
 
+            // 0 = Well
+            // 1 = Cave
+            // 2 = Treasure Room
+            // 3 = feilds
+            // 4 = town
+            // 5 = store 
+            // inside hut = 6
+            // 7 = trye treasure room
 
 
 
@@ -106,25 +114,24 @@ class Program
                     Console.WriteLine("interact  - Interact with something in the room");
                     Console.WriteLine("speak     - Talk into the void");
                     Console.WriteLine("map       - Show the map");
-                    Console.WriteLine("log       - Show special game events");
+                    Console.WriteLine("journal   - Show special game events");
                     Console.WriteLine("inputlog  - Show all player inputs");
                     Console.WriteLine("quit      - Return to the main menu");
                 }
 
 
 
-
-                else if (command == "log")
+                else if (command == "journal")
                 {
                     Console.WriteLine();
 
                     if (log.Count == 0)
                     {
-                        Console.WriteLine("The event log is empty.");
+                        Console.WriteLine("The journal is empty.");
                     }
                     else
                     {
-                        Console.WriteLine("Game Event Log:");
+                        Console.WriteLine("Journal:");
 
                         foreach (string entry in log)
                         {
@@ -409,6 +416,13 @@ class Program
 
                         Console.WriteLine("You walk north into the town.");
                     }
+                    else if (playerPosition == 2)
+                    {
+                        playerPosition = 7;
+
+                        Console.WriteLine("you waln into a room coverid in gold and relics.");
+                        Console.WriteLine("There is a ladder on the wall");
+                    }
 
                     else
                     {
@@ -544,7 +558,7 @@ class Program
                     }
 
 
-                    else if (playerPosition == 2)
+                    else if (playerPosition == 7)
                     {
                         Console.WriteLine("You approach the treasure.");
                         Console.WriteLine("You pick up the golden treasure!");
@@ -619,9 +633,14 @@ class Program
 
         inputLog.Add("Riddle 1 answer: " + answer1);
 
-        if (answer1 == "piano" ||
-            answer1 == "a piano" ||
-            answer1 == "the piano")
+        if (answer1 == "Arthur " ||
+            answer1 == "Arthur king of the britan" ||
+            answer1 == "Lancelot" ||
+            answer1 == "Lancelot of camelot" ||
+            answer1 == "Robin" ||
+            answer1 == "Galahad " ||
+            answer1 == "Galahad of camelot"
+                )
         {
             Console.WriteLine("Correct!");
 
@@ -676,7 +695,7 @@ class Program
         inputLog.Add("Riddle 3 answer: " + answer3);
 
         if (answer3 == "african or european swallow"||
-            answer2 == "african or european")
+            answer3 == "african or european")
         {
             Console.WriteLine("I dont know!");
             Console.WriteLine("A loud bang is heard and the door opens.");
@@ -698,7 +717,7 @@ class Program
 
         Console.WriteLine();
         Console.WriteLine("The voice falls silent.");
-        Console.WriteLine("The path into the treasure room is now open.");
+        Console.WriteLine("The path to the north into a new the treasure room is now open.");
 
         log.Add("Solved all three riddles.");
 
