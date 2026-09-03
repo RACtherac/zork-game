@@ -354,7 +354,7 @@ class Program
                         }
                         else
                         {
-                            Console.WriteLine("There is nothing else useful here.");
+                            Console.WriteLine("The warehouse is empty.");
                         }
                     }
 
@@ -810,7 +810,7 @@ class Program
                     {
                         if (hascrops)
                         {
-                            Console.WriteLine("You put the crops into the slit.");
+                            Console.WriteLine("You put the crops into the slot.");
                             Console.WriteLine("The door opens and you see a small room with a bed and a chest.");
 
                             log.Add("Opened the hut door using crops.");
@@ -961,12 +961,14 @@ class Program
                         if (!hasgun)
                         {
                             Console.WriteLine("You search the tunnel.");
-                            Console.WriteLine("You find an old gun hidden underneath some cloth.");
+                            Console.WriteLine("You find an old gun hidden underneath some cloth next to a skeleton.");
                             Console.WriteLine("You pick it up.");
+
 
                             hasgun = true;
 
                             log.Add("Found a gun in the tunnel.");
+                            log.Add("By the skeleton was a swallon I wonder if its Europen op African?");
                         }
                         else
                         {
@@ -1136,8 +1138,8 @@ class Program
         Console.WriteLine("Underground:");
         Console.WriteLine();
 
-        Console.WriteLine("                    " + barn);
-        Console.WriteLine("                       |");
+        Console.WriteLine("                  " + barn);
+        Console.WriteLine("                    |");
         Console.WriteLine("                  " + basement + " --- " + tunnel);
 
         Console.WriteLine();
@@ -1145,8 +1147,8 @@ class Program
         Console.WriteLine();
 
         Console.WriteLine("                    " + treasure);
-        Console.WriteLine("                       |");
-        Console.WriteLine("                  " + treasure2);
+        Console.WriteLine("                      |");
+        Console.WriteLine("                    " + treasure2);
 
         Console.WriteLine();
 
@@ -1236,7 +1238,7 @@ class Program
         {
             Console.WriteLine("       __________________");
             Console.WriteLine("      |                  |");
-            Console.WriteLine("      |     TREASURE     |");
+            Console.WriteLine("      |                  |");
             Console.WriteLine("      |   $  $  $  $     |");
             Console.WriteLine("      |  $  $  $  $  $   |");
             Console.WriteLine("      |__________________|");
@@ -1244,8 +1246,8 @@ class Program
 
         else if (playerPosition == 3)
         {
-            Console.WriteLine("   | |   | |   | |   | |");
-            Console.WriteLine("   | |   | |   | |   | |");
+            Console.WriteLine("    | |   | |    | |     | |");
+            Console.WriteLine("    | |   | |    | |     | |");
             Console.WriteLine("   / \\   / \\   / \\   / \\");
             Console.WriteLine("  /   \\ /   \\ /   \\ /   \\");
             Console.WriteLine();
@@ -1299,7 +1301,7 @@ class Program
         {
             Console.WriteLine("       __________________");
             Console.WriteLine("      |                  |");
-            Console.WriteLine("      |    GOLD GOLD     |");
+            Console.WriteLine("      |                  |");
             Console.WriteLine("      |  $  $  $  $  $   |");
             Console.WriteLine("      |__________________|");
             Console.WriteLine();
@@ -1324,7 +1326,7 @@ class Program
         {
             Console.WriteLine("        __________________");
             Console.WriteLine("       |                  |");
-            Console.WriteLine("       |   BARN BASEMENT  |");
+            Console.WriteLine("       |                  |");
             Console.WriteLine("       |                  |");
             Console.WriteLine("       |       ||         |");
             Console.WriteLine("       |_______||_________|");
@@ -1348,7 +1350,7 @@ class Program
             Console.WriteLine("    /                       \\");
             Console.WriteLine("   |          TUNNEL        |");
             Console.WriteLine("   |       __________       |");
-            Console.WriteLine("   |      |    GUN   |      |");
+            Console.WriteLine("   |      |          |      |");
             Console.WriteLine("   |______|__________|______|");
         }
 
@@ -1364,7 +1366,7 @@ class Program
         Console.WriteLine();
 
         Console.WriteLine("A voice speaks from the darkness:");
-        Console.WriteLine("\"Answer my three riddles, and you may enter.\"");
+        Console.WriteLine("Answer my three riddles, and you may enter.");
 
 
         Console.WriteLine();
@@ -1409,7 +1411,14 @@ class Program
 
         if (answer2 == "red" ||
             answer2 == "blue" ||
-            answer2 == "green")
+            answer2 == "green" ||
+            answer2 == "yellow" ||
+            answer2 == "purple" ||
+            answer2 == "orange" ||
+            answer2 == "pink" ||
+            answer2 == "black" ||
+            answer2 == "white" ||
+            answer2 == "gray")
         {
             Console.WriteLine("Correct!");
 
@@ -1438,7 +1447,10 @@ class Program
             answer3 == "african or european")
         {
             Console.WriteLine("I don't know!");
-            Console.WriteLine("A loud bang is heard and the door opens.");
+            Console.WriteLine("A scream is heard from the riddler");
+            Console.WriteLine("The riddler falls into a pit and dies.");
+            Console.WriteLine();
+            Console.WriteLine("A loud click is heard and the door opens.");
 
             log.Add("Solved riddle 3.");
         }
