@@ -16,8 +16,8 @@ class Program
             List<string> log = new List<string>();
             List<string> inputLog = new List<string>();
 
-
-
+       
+         
             // 0  = Well
             // 1  = Cave
             // 2  = Treasure Room
@@ -36,7 +36,7 @@ class Program
             bool inMenu = true;
 
             int playerPosition = 0;
-
+            
             bool hasKey = false;
             bool hascrops = false;
             bool monsterAlive = true;
@@ -45,7 +45,6 @@ class Program
             bool hastools = false;
             bool hasgun = false;
             bool barnOpened = false;
-            bool hutopened = false;
 
             bool paintingDiscovered = false;
             int paintingHintStage = 0;
@@ -137,7 +136,7 @@ class Program
                 }
 
 
-
+       
 
                 else if (command == "journal")
                 {
@@ -181,7 +180,7 @@ class Program
                 }
 
 
-
+       
 
                 else if (command == "map")
                 {
@@ -280,13 +279,6 @@ class Program
                         Console.WriteLine("          |  []  |");
                         Console.WriteLine("          |______|");
                     }
-                    if (!hutopened)
-                    {
-                        Console.WriteLine("The doors are barricaded from the outside.");
-                        Console.WriteLine("They look like they were trying to keep something in.");
-                        Console.WriteLine("You may need some tools to open them.");
-                    }
-                   
 
                     else if (playerPosition == 6)
                     {
@@ -686,35 +678,30 @@ class Program
                         Console.WriteLine("You are in the cave [1].");
                     }
 
-                    else if (playerPosition == 5)
+                    else if (playerPosition == 4)
                     {
-                        if (hascrops)
-                        {
-                            if (!hutopened)
-                            {
-                                playerPosition = 5;
-                                discoveredLocations[5] = true;
+                        playerPosition = 5;
+                        discoveredLocations[5] = true;
 
-                                Console.WriteLine("You walk west to the hut.");
-                                Console.WriteLine("You stand outside the hut [5].");
-                            }
-                            else
-                            {
-                                Console.WriteLine("closed.");
-                                Console.WriteLine("The doors are barricaded from the outside.");
-                                Console.WriteLine("They look like they were trying to keep something in.");
-                                Console.WriteLine("You may need some tools to open them.");
-                            }
-                        }
+                        Console.WriteLine("You walk west to the hut.");
+                        Console.WriteLine("You stand outside the hut [5].");
                     }
 
                     else if (playerPosition == 5)
                     {
-                        playerPosition = 6;
+                        if (hascrops)
+                        {
+                            playerPosition = 6;
 
-                        Console.WriteLine("You walk inside and feel a liquid drop on your shoulder.");
+                            Console.WriteLine("You walk inside and feel a liquid drop on your shoulder.");
 
-                        log.Add("Entered the hut. Something does not feel right.");
+                            log.Add("Entered the hut. Something does not feel right.");
+                        }
+                        else
+                        {
+                            Console.WriteLine("You cannot enter the hut without something to put in the slit.");
+
+                        }
                     }
 
                     else if (playerPosition == 3)
@@ -785,7 +772,7 @@ class Program
                 }
 
 
-
+            
 
                 else if (command == "south")
                 {
@@ -1253,11 +1240,11 @@ class Program
         Console.WriteLine();
         Console.WriteLine("      " + hut + " --- " + town);
         Console.WriteLine("                  |");
-        Console.WriteLine("" + warehouse + " --- " + fields + " --- " + barn);
+        Console.WriteLine(""+warehouse +     " --- " + fields + " --- " + barn);
         Console.WriteLine("                  |");
-        Console.WriteLine("     " + well + " --- " + cave + " --- " + treasure);
+        Console.WriteLine("     " + well+ " --- " + cave + " --- " + treasure);
         Console.WriteLine();
-        Console.WriteLine();
+        Console.WriteLine( );
 
         Console.WriteLine();
         Console.WriteLine("Underground:");
@@ -1332,7 +1319,7 @@ class Program
 
 
 
-
+   
 
 
     static bool AskRiddles(List<string> log, List<string> inputLog)
