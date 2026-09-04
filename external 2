@@ -16,8 +16,8 @@ class Program
             List<string> log = new List<string>();
             List<string> inputLog = new List<string>();
 
-       
-         
+
+
             // 0  = Well
             // 1  = Cave
             // 2  = Treasure Room
@@ -45,6 +45,7 @@ class Program
             bool hastools = false;
             bool hasgun = false;
             bool barnOpened = false;
+            bool hutopened = false;
 
             bool paintingDiscovered = false;
             int paintingHintStage = 0;
@@ -97,7 +98,7 @@ class Program
 
             Console.Clear();
 
-            Console.WriteLine("You see a door to the east, and a path leading west.");
+            Console.WriteLine("You see a path to the east");
             Console.WriteLine("Type 'help' to see the commands.");
             Console.WriteLine("You are right now in the well [0]");
 
@@ -136,7 +137,7 @@ class Program
                 }
 
 
-       
+
 
                 else if (command == "journal")
                 {
@@ -180,7 +181,7 @@ class Program
                 }
 
 
-       
+
 
                 else if (command == "map")
                 {
@@ -198,6 +199,15 @@ class Program
                         Console.WriteLine("Around you are bones scattered in the water.");
                         Console.WriteLine("Could these be the people before you that were thrown in here too?");
                         Console.WriteLine("There is something shiny in the water.");
+                        Console.WriteLine();
+                        Console.WriteLine("       _________");
+                        Console.WriteLine("      /         \\");
+                        Console.WriteLine("     /           \\");
+                        Console.WriteLine("    |    WATER    |");
+                        Console.WriteLine("    |   ~~~~~~~~  |");
+                        Console.WriteLine("    |   ~~~~~~~~  |");
+                        Console.WriteLine("     \\           /");
+                        Console.WriteLine("      \\_________/");
                     }
 
                     else if (playerPosition == 1)
@@ -205,12 +215,27 @@ class Program
                         Console.WriteLine("You are inside a dark cave.");
                         Console.WriteLine("There is a locked door to the east.");
                         Console.WriteLine("You hear something moving in the darkness.");
+                        Console.WriteLine();
+                        Console.WriteLine("        ___________");
+                        Console.WriteLine("      /             \\");
+                        Console.WriteLine("     /               \\");
+                        Console.WriteLine("    |       /\\        |");
+                        Console.WriteLine("    |      /  \\       |");
+                        Console.WriteLine("    |     /    \\      |");
+                        Console.WriteLine("    |____/      \\_____|");
                     }
 
                     else if (playerPosition == 2)
                     {
                         Console.WriteLine("You are in a large treasure room.");
                         Console.WriteLine("There is gold and treasure everywhere!");
+                        Console.WriteLine();
+                        Console.WriteLine("       __________________");
+                        Console.WriteLine("      |                  |");
+                        Console.WriteLine("      |                  |");
+                        Console.WriteLine("      |   $  $  $  $     |");
+                        Console.WriteLine("      |  $  $  $  $  $   |");
+                        Console.WriteLine("      |__________________|");
                     }
 
                     else if (playerPosition == 3)
@@ -219,19 +244,49 @@ class Program
                         Console.WriteLine("In the distance you see lights.");
                         Console.WriteLine("There is a warehouse to the west.");
                         Console.WriteLine("There is a barn to the east.");
+                        Console.WriteLine();
+                        Console.WriteLine("   | |   | |   | |   | |");
+                        Console.WriteLine("   | |   | |   | |   | |");
+                        Console.WriteLine("   / \\   / \\   / \\   / \\");
+                        Console.WriteLine("  /   \\ /   \\ /   \\ /   \\");
+                        Console.WriteLine();
+                        Console.WriteLine("          FIELD OF CROPS");
                     }
 
                     else if (playerPosition == 4)
                     {
                         Console.WriteLine("A small town.");
                         Console.WriteLine("Lights are on in the streets and windows, but no one is around.");
+                        Console.WriteLine();
+                        Console.WriteLine("             /\\");
+                        Console.WriteLine("            /  \\");
+                        Console.WriteLine("           /____\\");
+                        Console.WriteLine("          |      |");
+                        Console.WriteLine("          | TOWN |");
+                        Console.WriteLine("          |______|");
+                        Console.WriteLine("       _ _ _|  |_ _ _");
                     }
 
                     else if (playerPosition == 5)
                     {
                         Console.WriteLine("A small hut with a slit in the door.");
                         Console.WriteLine("It looks like you can put something there.");
+                        Console.WriteLine();
+                        Console.WriteLine("             /\\");
+                        Console.WriteLine("            /  \\");
+                        Console.WriteLine("           /____\\");
+                        Console.WriteLine("          |      |");
+                        Console.WriteLine("          | HUT  |");
+                        Console.WriteLine("          |  []  |");
+                        Console.WriteLine("          |______|");
                     }
+                    if (!hutopened)
+                    {
+                        Console.WriteLine("The doors are barricaded from the outside.");
+                        Console.WriteLine("They look like they were trying to keep something in.");
+                        Console.WriteLine("You may need some tools to open them.");
+                    }
+                   
 
                     else if (playerPosition == 6)
                     {
@@ -244,6 +299,13 @@ class Program
                             if (hasgun)
                             {
                                 Console.WriteLine("You feel the gun in your possession.");
+                            }
+                            else
+                            {
+                                Console.WriteLine("You have no way to defend yourself.");
+                                Console.WriteLine("The creature lunges at you.");
+                                Console.WriteLine("you are devoured by the creature.");
+                                isPlaying = false;
                             }
                         }
                         else
@@ -316,11 +378,30 @@ class Program
                     {
                         Console.WriteLine("Gold, jewelry, riches everywhere.");
                         Console.WriteLine("A ladder leans on the wall and a large hole in the roof.");
+                        Console.WriteLine();
+                        Console.WriteLine("       __________________");
+                        Console.WriteLine("      |                  |");
+                        Console.WriteLine("      |                  |");
+                        Console.WriteLine("      |  $  $  $  $  $   |");
+                        Console.WriteLine("      |__________________|");
+                        Console.WriteLine();
+                        Console.WriteLine("             /\\");
+                        Console.WriteLine("            /  \\");
+                        Console.WriteLine("           /    \\");
+                        Console.WriteLine("          FREEDOM");
                     }
 
                     else if (playerPosition == 8)
                     {
                         Console.WriteLine("You approach the barn.");
+                        Console.WriteLine();
+                        Console.WriteLine("             /\\");
+                        Console.WriteLine("            /  \\");
+                        Console.WriteLine("           /____\\");
+                        Console.WriteLine("          |      |");
+                        Console.WriteLine("          | BARN |");
+                        Console.WriteLine("          |  ||  |");
+                        Console.WriteLine("          |__||__|");
 
                         if (!barnOpened)
                         {
@@ -341,12 +422,27 @@ class Program
                         Console.WriteLine("You are in the dark basement of the barn.");
                         Console.WriteLine("There is a tunnel leading west.");
                         Console.WriteLine("A ladder leads back up to the barn.");
+                        Console.WriteLine();
+                        Console.WriteLine("        __________________");
+                        Console.WriteLine("       |                  |");
+                        Console.WriteLine("       |                  |");
+                        Console.WriteLine("       |                  |");
+                        Console.WriteLine("       |       ||         |");
+                        Console.WriteLine("       |_______||_________|");
                     }
 
                     else if (playerPosition == 10)
                     {
                         Console.WriteLine("You are inside an old warehouse.");
                         Console.WriteLine("Broken boxes and old equipment cover the floor.");
+                        Console.WriteLine();
+                        Console.WriteLine("     _____________________");
+                        Console.WriteLine("    |                     |");
+                        Console.WriteLine("    |     WAREHOUSE       |");
+                        Console.WriteLine("    |    _________        |");
+                        Console.WriteLine("    |   |  BOXES  |       |");
+                        Console.WriteLine("    |   |_________|       |");
+                        Console.WriteLine("    |_____________________|");
 
                         if (!hastools)
                         {
@@ -362,6 +458,15 @@ class Program
                     {
                         Console.WriteLine("You are in a dark underground tunnel.");
                         Console.WriteLine("The tunnel is cold and damp.");
+                        Console.WriteLine();
+                        Console.WriteLine("       ___________________");
+                        Console.WriteLine("     /                     \\");
+                        Console.WriteLine("    /                       \\");
+                        Console.WriteLine("   |          TUNNEL        |");
+                        Console.WriteLine("   |       __________       |");
+                        Console.WriteLine("   |      |          |      |");
+                        Console.WriteLine("   |______|__________|______|");
+
 
                         if (!hasgun)
                         {
@@ -373,7 +478,7 @@ class Program
                         }
                     }
 
-                    ShowLocationPicture(playerPosition);
+                    //ShowLocationPicture(playerPosition);
                 }
 
 
@@ -389,6 +494,7 @@ class Program
                     {
                         Console.WriteLine("You call out.");
                         Console.WriteLine("Your voice echoes through the cave.");
+                        Console.WriteLine("A crittering sound answers");
                     }
 
                     else if (playerPosition == 2)
@@ -400,6 +506,7 @@ class Program
                     else if (playerPosition == 3)
                     {
                         Console.WriteLine("You whistle a tune for yourself.");
+                        Console.WriteLine("The wind flows throught the feilds, its almost like the feilds wissle back");
                     }
 
                     else if (playerPosition == 4)
@@ -447,6 +554,7 @@ class Program
                     {
                         Console.WriteLine("You call out into the warehouse.");
                         Console.WriteLine("Your voice echoes between the empty walls.");
+                        Console.WriteLine("Rats can be heard skurry around");
                     }
 
                     else if (playerPosition == 11)
@@ -578,13 +686,26 @@ class Program
                         Console.WriteLine("You are in the cave [1].");
                     }
 
-                    else if (playerPosition == 4)
+                    else if (playerPosition == 5)
                     {
-                        playerPosition = 5;
-                        discoveredLocations[5] = true;
+                        if (hascrops)
+                        {
+                            if (!hutopened)
+                            {
+                                playerPosition = 5;
+                                discoveredLocations[5] = true;
 
-                        Console.WriteLine("You walk west to the hut.");
-                        Console.WriteLine("You stand outside the hut [5].");
+                                Console.WriteLine("You walk west to the hut.");
+                                Console.WriteLine("You stand outside the hut [5].");
+                            }
+                            else
+                            {
+                                Console.WriteLine("closed.");
+                                Console.WriteLine("The doors are barricaded from the outside.");
+                                Console.WriteLine("They look like they were trying to keep something in.");
+                                Console.WriteLine("You may need some tools to open them.");
+                            }
+                        }
                     }
 
                     else if (playerPosition == 5)
@@ -664,7 +785,7 @@ class Program
                 }
 
 
-            
+
 
                 else if (command == "south")
                 {
@@ -746,7 +867,7 @@ class Program
 
                 else if (command == "interact")
                 {
-               
+
 
                     if (playerPosition == 0)
                     {
@@ -812,6 +933,7 @@ class Program
                         {
                             Console.WriteLine("You put the crops into the slot.");
                             Console.WriteLine("The door opens and you see a small room with a bed and a chest.");
+                            Console.WriteLine("You can walk west into the hut");
 
                             log.Add("Opened the hut door using crops.");
                         }
@@ -902,7 +1024,7 @@ class Program
                     }
 
 
-              
+
 
                     else if (playerPosition == 8)
                     {
@@ -936,7 +1058,11 @@ class Program
                         }
                     }
 
+                    else if (playerPosition == 9)
+                    {
+                        Console.WriteLine("Nothing is here");
 
+                    }
                     else if (playerPosition == 10)
                     {
                         if (!hastools)
@@ -963,12 +1089,13 @@ class Program
                             Console.WriteLine("You search the tunnel.");
                             Console.WriteLine("You find an old gun hidden underneath some cloth next to a skeleton.");
                             Console.WriteLine("You pick it up.");
+                            Console.WriteLine("As you pick up you see a bird fly away to the barn");
 
 
                             hasgun = true;
 
                             log.Add("Found a gun in the tunnel.");
-                            log.Add("By the skeleton was a swallon I wonder if its Europen op African?");
+                            log.Add("By the skeleton was a swallon I wonder if its African op European?");
                         }
                         else
                         {
@@ -1112,27 +1239,25 @@ class Program
         Console.WriteLine("MAP");
         Console.WriteLine();
 
-        string well = discoveredLocations[0] ? "[Well]" : "[???]";
-        string cave = discoveredLocations[1] ? "[Cave]" : "[???]";
-        string treasure = discoveredLocations[2] ? "[Treasure]" : "[???]";
-        string fields = discoveredLocations[3] ? "[Fields]" : "[???]";
-        string town = discoveredLocations[4] ? "[Town]" : "[???]";
+        string well = discoveredLocations[0] ? "[Well]" : "[????]";
+        string cave = discoveredLocations[1] ? "[Cave]" : "[????]";
+        string treasure = discoveredLocations[2] ? "[Treasure]" : "[????????]";
+        string fields = discoveredLocations[3] ? "[Fields]" : "[??????]";
+        string town = discoveredLocations[4] ? "[Town]" : "[????]";
         string hut = discoveredLocations[5] ? "[Hut]" : "[???]";
-        string treasure2 = discoveredLocations[7] ? "[Treasure 2]" : "[???]";
-        string barn = discoveredLocations[8] ? "[Barn]" : "[???]";
-        string basement = discoveredLocations[9] ? "[Basement]" : "[???]";
-        string warehouse = discoveredLocations[10] ? "[Warehouse]" : "[???]";
-        string tunnel = discoveredLocations[11] ? "[Tunnel]" : "[???]";
-
-
+        string treasure2 = discoveredLocations[7] ? "[Treasure 2]" : "[????????]";
+        string barn = discoveredLocations[8] ? "[Barn]" : "[????]";
+        string basement = discoveredLocations[9] ? "[Basement]" : "[????????]";
+        string warehouse = discoveredLocations[10] ? "[warehouse]" : "[????????]";
+        string tunnel = discoveredLocations[11] ? "[tunnel]" : "[??????]";
         Console.WriteLine();
         Console.WriteLine("      " + hut + " --- " + town);
         Console.WriteLine("                  |");
-        Console.WriteLine("      "+warehouse + " --- " + fields + " --- " + barn);
+        Console.WriteLine("" + warehouse + " --- " + fields + " --- " + barn);
         Console.WriteLine("                  |");
-        Console.WriteLine("     " + well+ " --- " + cave + " --- " + treasure);
+        Console.WriteLine("     " + well + " --- " + cave + " --- " + treasure);
         Console.WriteLine();
-        Console.WriteLine( );
+        Console.WriteLine();
 
         Console.WriteLine();
         Console.WriteLine("Underground:");
@@ -1207,155 +1332,7 @@ class Program
 
 
 
-    static void ShowLocationPicture(int playerPosition)
-    {
-        Console.WriteLine();
 
-        if (playerPosition == 0)
-        {
-            Console.WriteLine("       _________");
-            Console.WriteLine("      /         \\");
-            Console.WriteLine("     /           \\");
-            Console.WriteLine("    |    WATER    |");
-            Console.WriteLine("    |   ~~~~~~~~  |");
-            Console.WriteLine("    |   ~~~~~~~~  |");
-            Console.WriteLine("     \\           /");
-            Console.WriteLine("      \\_________/");
-        }
-
-        else if (playerPosition == 1)
-        {
-            Console.WriteLine("        ___________");
-            Console.WriteLine("      /             \\");
-            Console.WriteLine("     /               \\");
-            Console.WriteLine("    |       /\\        |");
-            Console.WriteLine("    |      /  \\       |");
-            Console.WriteLine("    |     /    \\      |");
-            Console.WriteLine("    |____/      \\_____|");
-        }
-
-        else if (playerPosition == 2)
-        {
-            Console.WriteLine("       __________________");
-            Console.WriteLine("      |                  |");
-            Console.WriteLine("      |                  |");
-            Console.WriteLine("      |   $  $  $  $     |");
-            Console.WriteLine("      |  $  $  $  $  $   |");
-            Console.WriteLine("      |__________________|");
-        }
-
-        else if (playerPosition == 3)
-        {
-            Console.WriteLine("    | |   | |    | |     | |");
-            Console.WriteLine("    | |   | |    | |     | |");
-            Console.WriteLine("   / \\   / \\   / \\   / \\");
-            Console.WriteLine("  /   \\ /   \\ /   \\ /   \\");
-            Console.WriteLine();
-            Console.WriteLine("          FIELD OF CROPS");
-        }
-
-        else if (playerPosition == 4)
-        {
-            Console.WriteLine("             /\\");
-            Console.WriteLine("            /  \\");
-            Console.WriteLine("           /____\\");
-            Console.WriteLine("          |      |");
-            Console.WriteLine("          | TOWN |");
-            Console.WriteLine("          |______|");
-            Console.WriteLine("       _ _ _|  |_ _ _");
-        }
-
-        else if (playerPosition == 5)
-        {
-            Console.WriteLine("             /\\");
-            Console.WriteLine("            /  \\");
-            Console.WriteLine("           /____\\");
-            Console.WriteLine("          |      |");
-            Console.WriteLine("          | HUT  |");
-            Console.WriteLine("          |  []  |");
-            Console.WriteLine("          |______|");
-        }
-
-        else if (playerPosition == 6)
-        {
-            Console.WriteLine("        __________________");
-            Console.WriteLine("       |                  |");
-            Console.WriteLine("       |       CHEST      |");
-            Console.WriteLine("       |       ____       |");
-            Console.WriteLine("       |      |____|      |");
-            Console.WriteLine("       |                  |");
-            Console.WriteLine("       |__________________|");
-
-            if (!monsterAlive)
-            {
-                Console.WriteLine();
-                Console.WriteLine("        ____________________");
-                Console.WriteLine("       |  KNIGHTS PAINTING  |");
-                Console.WriteLine("       |                    |");
-                Console.WriteLine("       |  Arthur  Lancelot  |");
-                Console.WriteLine("       |____________________|");
-            }
-        }
-
-        else if (playerPosition == 7)
-        {
-            Console.WriteLine("       __________________");
-            Console.WriteLine("      |                  |");
-            Console.WriteLine("      |                  |");
-            Console.WriteLine("      |  $  $  $  $  $   |");
-            Console.WriteLine("      |__________________|");
-            Console.WriteLine();
-            Console.WriteLine("             /\\");
-            Console.WriteLine("            /  \\");
-            Console.WriteLine("           /    \\");
-            Console.WriteLine("          FREEDOM");
-        }
-
-        else if (playerPosition == 8)
-        {
-            Console.WriteLine("             /\\");
-            Console.WriteLine("            /  \\");
-            Console.WriteLine("           /____\\");
-            Console.WriteLine("          |      |");
-            Console.WriteLine("          | BARN |");
-            Console.WriteLine("          |  ||  |");
-            Console.WriteLine("          |__||__|");
-        }
-
-        else if (playerPosition == 9)
-        {
-            Console.WriteLine("        __________________");
-            Console.WriteLine("       |                  |");
-            Console.WriteLine("       |                  |");
-            Console.WriteLine("       |                  |");
-            Console.WriteLine("       |       ||         |");
-            Console.WriteLine("       |_______||_________|");
-        }
-
-        else if (playerPosition == 10)
-        {
-            Console.WriteLine("     _____________________");
-            Console.WriteLine("    |                     |");
-            Console.WriteLine("    |     WAREHOUSE       |");
-            Console.WriteLine("    |    _________        |");
-            Console.WriteLine("    |   |  BOXES  |       |");
-            Console.WriteLine("    |   |_________|       |");
-            Console.WriteLine("    |_____________________|");
-        }
-
-        else if (playerPosition == 11)
-        {
-            Console.WriteLine("       ___________________");
-            Console.WriteLine("     /                     \\");
-            Console.WriteLine("    /                       \\");
-            Console.WriteLine("   |          TUNNEL        |");
-            Console.WriteLine("   |       __________       |");
-            Console.WriteLine("   |      |          |      |");
-            Console.WriteLine("   |______|__________|______|");
-        }
-
-        Console.WriteLine();
-    }
 
 
     static bool AskRiddles(List<string> log, List<string> inputLog)
